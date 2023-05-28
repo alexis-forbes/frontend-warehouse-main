@@ -1,36 +1,53 @@
-import { Button, Card } from "react-bootstrap"
-import { useShoppingCart } from "../context/ShoppingCartContext"
-import { formatCurrency } from "../utilities/formatCurrency"
+import { Button, Card } from "react-bootstrap";
+import { useShoppingCart } from "../context/ShoppingCartContext";
+import { ArticleI } from "../models/article";
 
 type StoreItemProps = {
-  id: number
-  name: string
-  price: number
-  imgUrl: string
-}
+  articles: ArticleI[];
+  id: string;
+  name: string;
+};
 
-export function StoreItem({ id, name, price, imgUrl }: StoreItemProps) {
+export function StoreItem({ articles, id, name }: StoreItemProps) {
   const {
     getItemQuantity,
     increaseCartQuantity,
     decreaseCartQuantity,
     removeFromCart,
-  } = useShoppingCart()
-  const quantity = getItemQuantity(id)
+  } = useShoppingCart();
+  const quantity = getItemQuantity(id);
 
   return (
     <Card className="h-100">
       <Card.Img
         variant="top"
-        src={imgUrl}
+        src={
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ikea_logo.svg/1280px-Ikea_logo.svg.png"
+        }
         height="200px"
         style={{ objectFit: "cover" }}
       />
       <Card.Body className="d-flex flex-column">
         <Card.Title className="d-flex justify-content-between align-items-baseline mb-4">
           <span className="fs-2">{name}</span>
-          <span className="ms-2 text-muted">{formatCurrency(price)}</span>
         </Card.Title>
+        <div>
+          <>
+            {articles.map((article, index) => (
+              <div key={`article${index}`}>
+                <Card.Subtitle className="d-block justify-content-between align-items-baseline mb-4">
+                  <div>
+                    <p>{`Article ${index + 1}: `}</p>
+                  </div>
+                  <span>{article.id}</span>
+                  <br />
+                  <br />
+                  <span>{`Amount required: ${article.amountRequired}`}</span>
+                </Card.Subtitle>
+              </div>
+            ))}
+          </>
+        </div>
         <div className="mt-auto">
           {quantity === 0 ? (
             <Button className="w-100" onClick={() => increaseCartQuantity(id)}>
@@ -63,5 +80,5 @@ export function StoreItem({ id, name, price, imgUrl }: StoreItemProps) {
         </div>
       </Card.Body>
     </Card>
-  )
+  );
 }

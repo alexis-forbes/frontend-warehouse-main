@@ -22,5 +22,5 @@ each call to the db, also some visual updates in the UI to inform the user.
 You can delete items in the cart or directly increase or reduce the amount of products you want to send to the cart.
 After a sales has been made, the inventory in the store is updated accordingly with React context: 
 - Cart will be empty
-- The amount of products added will be reset
+- The inventory will be reset
 - The user is prompted with new options to create a new sale

@@ -7,14 +7,10 @@ import { useState } from "react";
 type ShoppingCartProps = {
   isOpen: boolean;
   products: ProductI[];
-  cartQuantity: number;
 };
 
-export function ShoppingCart({
-  isOpen,
-  products,
-  cartQuantity,
-}: ShoppingCartProps) {
+export function ShoppingCart({ isOpen, products }: ShoppingCartProps) {
+  const { removeFromCart } = useShoppingCart();
   const { closeCart, cartItems } = useShoppingCart();
   const [sales, setSale] = useState([]);
 
@@ -32,13 +28,25 @@ export function ShoppingCart({
   });
 
   function addSale() {
-    requestOptions.map((option) => {
-      fetch(addSaleUrl, option)
-        .then((res) => res.json())
-        .then((d) => setSale(d));
-    });
-    //TODO: CLEAN UP CART
+    if (cartItems.length > 0) {
+      requestOptions.forEach((option) => {
+        fetch(addSaleUrl, option)
+          .then((res) => res.json())
+          .then((d) => setSale(d))
+          .catch((error) => console.log(error));
+      });
+
+      cartItems.forEach((item) => {
+        removeFromCart(item.id);
+      });
+      console.log("You have made a sale!", sales);
+    } else {
+      closeCart();
+    }
   }
+
+  const cartWithItems = cartItems.length > 0;
+  const cartWithoutItems = cartItems.length === 0;
 
   return (
     <Offcanvas show={isOpen} onHide={closeCart} placement="end">
@@ -50,10 +58,20 @@ export function ShoppingCart({
           {cartItems.map((item) => (
             <CartItem key={item.id} {...item} products={products} />
           ))}
-          <div className="ms-auto fw-bold fs-5">Total </div>
+          <div className="ms-auto fw-bold fs-5">
+            {cartWithItems ? "Total" : "Inventory updated!"}
+          </div>
+          <div>
+            {cartWithoutItems && (
+              <div className="ms-auto fw-bold fs-8">
+                Sale completed! Add more items to register a new sale.
+              </div>
+            )}
+          </div>
         </Stack>
+        <br />
         <Button variant="primary" size="lg" onClick={() => addSale()}>
-          Complete purchase
+          {cartWithItems ? "Register sale" : "Add items"}
         </Button>
       </Offcanvas.Body>
     </Offcanvas>

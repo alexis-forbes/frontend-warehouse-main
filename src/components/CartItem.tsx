@@ -18,9 +18,7 @@ export function CartItem({ id, quantity, products }: CartItemProps) {
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
       <img
-        src={
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ikea_logo.svg/1280px-Ikea_logo.svg.png"
-        }
+        src="imgs/ikea-logo.png"
         style={{ width: "125px", height: "75px", objectFit: "cover" }}
       />
       <div className="me-auto">

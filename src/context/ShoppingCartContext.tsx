@@ -49,7 +49,7 @@ export function ShoppingCartProvider({
   function getItemQuantity(id: string) {
     return cartItems.find((item) => item.id === id)?.quantity || 0;
   }
-  function increaseCartQuantity(id: string) {
+  const increaseCartQuantity = (id: string) => {
     setCartItems((currItems) => {
       if (currItems.find((item) => item.id === id) == null) {
         return [...currItems, { id, quantity: 1 }];
@@ -63,8 +63,8 @@ export function ShoppingCartProvider({
         });
       }
     });
-  }
-  function decreaseCartQuantity(id: string) {
+  };
+  const decreaseCartQuantity = (id: string) => {
     setCartItems((currItems) => {
       if (currItems.find((item) => item.id === id)?.quantity === 1) {
         return currItems.filter((item) => item.id !== id);
@@ -78,12 +78,13 @@ export function ShoppingCartProvider({
         });
       }
     });
-  }
-  function removeFromCart(id: string) {
+  };
+
+  const removeFromCart = (id: string) => {
     setCartItems((currItems) => {
       return currItems.filter((item) => item.id !== id);
     });
-  }
+  };
 
   return (
     <ShoppingCartContext.Provider
@@ -99,11 +100,7 @@ export function ShoppingCartProvider({
       }}
     >
       {children}
-      <ShoppingCart
-        isOpen={isOpen}
-        products={products}
-        cartQuantity={cartQuantity}
-      />
+      <ShoppingCart isOpen={isOpen} products={products} />
     </ShoppingCartContext.Provider>
   );
 }

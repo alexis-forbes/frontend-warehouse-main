@@ -1,4 +1,4 @@
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, ListGroup } from "react-bootstrap";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { ArticleI } from "../models/article";
 
@@ -21,9 +21,7 @@ export function StoreItem({ articles, id, name }: StoreItemProps) {
     <Card className="h-100">
       <Card.Img
         variant="top"
-        src={
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ikea_logo.svg/1280px-Ikea_logo.svg.png"
-        }
+        src="imgs/ikea-logo.png"
         height="200px"
         style={{ objectFit: "cover" }}
       />
@@ -34,17 +32,22 @@ export function StoreItem({ articles, id, name }: StoreItemProps) {
         <div>
           <>
             {articles.map((article, index) => (
-              <div key={`article${index}`}>
-                <Card.Subtitle className="d-block justify-content-between align-items-baseline mb-4">
-                  <div>
-                    <p>{`Article ${index + 1}: `}</p>
-                  </div>
-                  <span>{article.id}</span>
-                  <br />
-                  <br />
-                  <span>{`Amount required: ${article.amountRequired}`}</span>
-                </Card.Subtitle>
-              </div>
+              <Card.Body
+                key={`article${index}`}
+                className="d-block justify-content-between align-items-baseline mb-4"
+              >
+                <ListGroup as="ul">
+                  <ListGroup.Item as="li">
+                    <p>{`Article ${index + 1} `}</p>
+                  </ListGroup.Item>
+                  <ListGroup.Item as="li">
+                    <span>{article.id}</span>
+                  </ListGroup.Item>
+                  <ListGroup.Item as="li">
+                    <span>{`Amount required: ${article.amountRequired}`}</span>
+                  </ListGroup.Item>
+                </ListGroup>
+              </Card.Body>
             ))}
           </>
         </div>
